@@ -28,6 +28,8 @@ public class RoundSystem : MonoBehaviour
     private Camera playerCamera;
     OVRScreenFade playerScreen;
 
+    public Transform[] playerSpawnPoints;
+
     void Start()
     {
         timeTracker = GetComponent<TimeTracker>();
@@ -205,8 +207,14 @@ public class RoundSystem : MonoBehaviour
 
 
         //right now it only teleports them to the begining but ideally it would be randomly in the map
-        player.transform.position = new Vector3(0, player.transform.position.y, -6);
-        player.transform.rotation = Quaternion.identity;
+        //player.transform.position = new Vector3(0, player.transform.position.y, -6);
+        //player.transform.rotation = Quaternion.identity;
+
+        // Teleport player to a random spawn point
+        Transform randomSpawnPoint = playerSpawnPoints[Random.Range(0, playerSpawnPoints.Length)];
+        player.transform.position = randomSpawnPoint.position;
+        player.transform.rotation = randomSpawnPoint.rotation;
+
 
         yield return new WaitForSeconds(2f);
 
