@@ -22,6 +22,7 @@ public class RoundSystem : MonoBehaviour
     public TMP_Text BoardUI;
     public UserFollowUI userFollowUI;
     public PointToTarget helperArrow;
+    //[SerializeField] private float UIPopupSpeed = 5f;
 
     [Header("UI Timer")]
     public float uiTimer;
@@ -71,63 +72,9 @@ public class RoundSystem : MonoBehaviour
         objectToFind.name = objectToFindPrefab.name;
         MoveObject();
 
-        isUITimerGoing = true;
-        isArrowTimerGoing = true;
-        uiTimer = maxUITime;
-        uiTimerDuration = maxUITimeUp;
-        arrowTimer = 90; //for the first round we want it to be longer because they are exploring the area
-        //StartCoroutine(HelperUI(60f)); //maybe we want to do a timer instead?
+        StartCoroutine(HelperUI(60f)); //maybe we want to do a timer instead?
 
         StartNewRound();
-    }
-
-    private void Update()
-    {
-        //After timer ends, the UI will pop up.
-        if (isUITimerGoing)
-        {
-            //Debug.Log("UI");
-            if (uiTimer > 0)
-            {
-                uiTimer -= Time.deltaTime;
-            }
-            else if (uiTimer <= 0)
-            {
-                userFollowUI.gameObject.SetActive(true);
-                isUITimerGoing = false;
-                isUIUp = true;
-            }
-        }
-
-        if(isUIUp)
-        {
-            if(uiTimerDuration > 0)
-            {
-                uiTimerDuration -= Time.deltaTime;
-            }
-            else if(uiTimerDuration <= 0)
-            {
-                userFollowUI.gameObject.SetActive(false);
-                uiTimerDuration = maxUITimeUp;
-                isUIUp=false;
-            }
-        }
-
-        if(isArrowTimerGoing) //this isn't executing for some reason
-        {
-            //Debug.Log("Arrow");
-            if (arrowTimer > 0)
-            {
-                arrowTimer -= Time.deltaTime;
-                //Debug.Log(arrowTimer);
-            }
-            else if (arrowTimer <= 0)
-            {
-                helperArrow.gameObject.SetActive(true);
-                isArrowTimerGoing = false;
-            }
-        }
-
     }
 
     public void StartNewRound()
@@ -178,7 +125,7 @@ public class RoundSystem : MonoBehaviour
     //Move player to a random location in the map
     private void RelocatePlayer()
     {
-        if (!isGameEnded)
+        if(!isGameEnded)
         {
             StartCoroutine(MovePlayer());
         }
@@ -299,8 +246,7 @@ public class RoundSystem : MonoBehaviour
         }
 
     }
-
-    private void ResetUI()
+    private IEnumerator HelperUI(float time)
     {
         isUITimerGoing = false;
         isUIUp = false;
