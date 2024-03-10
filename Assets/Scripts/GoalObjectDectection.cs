@@ -39,7 +39,7 @@ public class GoalObjectDectection : MonoBehaviour
             if (!thresholdPassed)
             {
                 thresholdPassed = true;
-                //roundSystem.CheckObject(gameObject);
+                roundSystem.timeTracker.stopTimer();
             }
             if (isTutorial)
             {
@@ -77,6 +77,7 @@ public class GoalObjectDectection : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            roundSystem.timeTracker.startTimer();
             isTimerGoing = false;
             thresholdPassed = false;
 
